@@ -1,15 +1,12 @@
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
-from pytest import fixture
+import pytest
 
 from services.detect_image_cells_service import DetectImageCellsService
 from models.cell import Cell
 
 
-@fixture(scope="module")
+@pytest.fixture(scope="module")
 def cells() -> list[Cell]:
     template_path = Path(__file__).parent / "fixtures" / "bingo_card_template.png"
     return DetectImageCellsService.call(template_path)
