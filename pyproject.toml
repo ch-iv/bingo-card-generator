@@ -1,0 +1,28 @@
+[project]
+name = "bingo-card-generator"
+version = "0.1.0"
+description = "Bingo card generator."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.1.2",
+    "numpy>=2.2.6",
+    "opencv-python>=4.12.0.88",
+    "pillow>=11.3.0",
+]
+
+[tool.pyrefly]
+project-includes = ["**/*"]
+project-excludes = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/*venv/**/*",
+]
+
+[dependency-groups]
+dev = [
+    "pyrefly>=0.36.2",
+    "ruff>=0.14.0",
+]
+
+[tool]
