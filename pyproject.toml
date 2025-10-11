@@ -22,6 +22,7 @@ project-excludes = [
 [dependency-groups]
 dev = [
     "pyrefly>=0.36.2",
+    "pytest>=8.4.2",
     "ruff>=0.14.0",
 ]
 
