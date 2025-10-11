@@ -18,6 +18,10 @@ class CellContentDefinition(ABC):
     def bucket_content(self, bucket: int) -> list[str]:
         pass
 
+    @abstractmethod
+    def min_bucket_size(self) -> int:
+        pass
+
     def validate_bucket(self, bucket: int) -> None:
         min_bucket = 0
         max_bucket = self.bucket_count() - 1

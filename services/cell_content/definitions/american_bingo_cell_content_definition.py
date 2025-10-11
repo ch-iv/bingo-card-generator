@@ -1,4 +1,6 @@
-from services.cell_content.cell_content_definition import CellContentDefinition
+from services.cell_content.definitions.cell_content_definition import (
+    CellContentDefinition,
+)
 
 
 class AmericanBingoCellContentDefinition(CellContentDefinition):
@@ -8,6 +10,9 @@ class AmericanBingoCellContentDefinition(CellContentDefinition):
     def bucket_size(self, bucket: int) -> int:
         self.validate_bucket(bucket)
 
+        return 15
+
+    def min_bucket_size(self) -> int:
         return 15
 
     def bucket_content(self, bucket: int) -> list[str]:

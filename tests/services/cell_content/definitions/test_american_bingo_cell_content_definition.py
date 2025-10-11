@@ -1,9 +1,9 @@
 import pytest
 
-from services.cell_content.american_bingo_cell_content_definition import (
+from services.cell_content.definitions.american_bingo_cell_content_definition import (
     AmericanBingoCellContentDefinition,
 )
-from services.cell_content.cell_content_definition import InvalidBucketError
+from services.cell_content.definitions.cell_content_definition import InvalidBucketError
 
 
 @pytest.fixture(scope="module")
@@ -96,3 +96,7 @@ def test_raises_error_when_requesting_content_of_nonexistent_bucket(
 ) -> None:
     with pytest.raises(InvalidBucketError):
         definition.bucket_content(5)
+
+
+def test_min_bucket_size(definition: AmericanBingoCellContentDefinition) -> None:
+    assert definition.min_bucket_size() == 15
