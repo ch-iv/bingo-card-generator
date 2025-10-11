@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import itertools
 
-from ..models.cell import Cell
+from models.cell import Cell
 
 
 class DetectImageCellsService:
