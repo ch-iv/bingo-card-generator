@@ -3,36 +3,61 @@ import uuid
 
 from PIL import Image
 
-from ..models.cell import Cell
-from ..helpers.text_in_rectangle import draw_text_in_rectangle
+from models.cell import Cell
+from helpers.text_in_rectangle import draw_text_in_rectangle
+from .addons.addon import Addon
+from .cell_content.cell_content_generator import CellContentGenerator
 
 
 class FillBingoCardService:
     @staticmethod
     def call(
-        unfilled_bingo_card_path: Path, cells: list[Cell], texts: list[list[str]]
+        unfilled_bingo_card_path: Path,
+        cells: list[Cell],
+        content_generator: CellContentGenerator,
+        addons: list[Addon] | None = None,
     ) -> Path:
-        return FillBingoCardService(unfilled_bingo_card_path, cells, texts)._fill_card()
+        if addons is None:
+            addons = []
+
+        return FillBingoCardService(
+            unfilled_bingo_card_path, cells, content_generator, addons
+        )._fill_card()
 
     def __init__(
-        self, unfilled_bingo_card_path: Path, cells: list[Cell], texts: list[list[str]]
+        self,
+        unfilled_bingo_card_path: Path,
+        cells: list[Cell],
+        content_generator: CellContentGenerator,
+        addons: list[Addon],
     ):
         self.card = Image.open(unfilled_bingo_card_path)
         self.cells = cells
-        self.texts = texts
+        self.content_generator = content_generator
+        self.addons = addons
 
     @staticmethod
     def _unique_save_path() -> Path:
-        return Path(__file__).parent / "output" / f"filled_card_{uuid.uuid4()}.png"
+        directory = Path("output")
+        directory.mkdir(exist_ok=True)
+        return directory / f"filled_card_{uuid.uuid4()}.png"
 
     def _save_card(self) -> Path:
         save_path = self._unique_save_path()
         self.card.save(save_path)
         return save_path
 
+    def _content_for_cell(self, cell: Cell) -> str:
+        bucket = cell.col
+        index = cell.row
+
+        return self.content_generator.content_for(bucket, index)
+
     def _fill_card(self) -> Path:
+        self._call_addons()
+
         for cell in self.cells:
-            content = self.texts[cell.row][cell.col]
+            content = self._content_for_cell(cell)
             self._fill_cell(cell, content)
 
         return self._save_card()
@@ -48,6 +73,10 @@ class FillBingoCardService:
             rect_y=cell.y1,
             rect_width=cell.width,
             rect_height=cell.height,
-            font_size=92,
+            font_size=200,
             text_color="black",
         )
+
+    def _call_addons(self) -> None:
+        for addon in self.addons:
+            addon.call(self.card, self.cells)

@@ -19,4 +19,7 @@ class Cell:
         return self.y2 - self.y1
 
     def as_tuple(self):
-        return (self.row, self.col, self.x1, self.y1, self.x2, self.y2)
+        return self.row, self.col, self.x1, self.y1, self.x2, self.y2
+
+    def top_left(self) -> tuple[int, int]:
+        return self.x1, self.y1

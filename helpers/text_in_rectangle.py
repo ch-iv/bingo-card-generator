@@ -1,6 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 
+from paths import fonts_path
+
 
 def draw_text_in_rectangle(
     image: Image.Image,
@@ -9,7 +11,7 @@ def draw_text_in_rectangle(
     rect_y,
     rect_width,
     rect_height,
-    font_size=20,
+    font_size=60,
     text_color="black",
 ):
     draw = ImageDraw.Draw(image)
@@ -17,7 +19,7 @@ def draw_text_in_rectangle(
     current_font_size = font_size
 
     while current_font_size > 8:
-        font = ImageFont.truetype("lora.ttf", font_size)
+        font = ImageFont.truetype(fonts_path / "lora.ttf", font_size)
 
         test_char = "A"
         char_width = draw.textbbox((0, 0), test_char, font=font)[2]
@@ -61,6 +63,13 @@ def draw_text_in_rectangle(
         x = rect_x + (rect_width - line_width) // 2
         y = start_y + i * line_height
 
-        draw.text((x, y), line, fill=text_color, font=font)
+        draw.text(
+            (x, y),
+            line,
+            fill="white",
+            font=font,
+            stroke_width=7,
+            stroke_fill="black",
+        )
 
     return image
