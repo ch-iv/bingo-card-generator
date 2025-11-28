@@ -5,6 +5,7 @@ from PIL import Image
 
 from models.cell import Cell
 from helpers.text_in_rectangle import draw_text_in_rectangle
+from paths import generated_cards_path
 from .addons.addon import Addon
 from .cell_content.cell_content_generator import CellContentGenerator
 
@@ -38,7 +39,7 @@ class FillBingoCardService:
 
     @staticmethod
     def _unique_save_path() -> Path:
-        directory = Path("output")
+        directory = generated_cards_path
         directory.mkdir(exist_ok=True)
         return directory / f"filled_card_{uuid.uuid4()}.png"
 

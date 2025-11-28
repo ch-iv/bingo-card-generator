@@ -1,4 +1,18 @@
+<script src="/static/tailwindcss.js"></script>
+
 <form action="/bingo-template-upload" method="post" enctype="multipart/form-data">
     <input type="file" name="bingo-card-template" id="bingo-template-upload" onchange="this.form.submit()">
     <label for="bingo-template-upload">Upload Bingo Card Template</label>
 </form>
+
+<main class="max-w-7xl mx-auto p-4">
+    <div class="grid md:grid-cols-4 grid-cols-2  gap-4 mt-4">
+    {% for card_template in card_templates %}
+        <a href="/pre-fill-template?card_template={{ card_template.name }}">
+            <div class="max-w-xs rounded overflow-hidden">
+                <img class="w-full" src="{{ card_template.web_safe_path }}" />
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+</main>

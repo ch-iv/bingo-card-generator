@@ -1,0 +1,29 @@
+<script src="/static/tailwindcss.js"></script>
+
+<script>
+    async function submitForm(e) {
+        e.preventDefault();
+
+        const card_template = "{{ card_template.name }}";
+
+        const response = await fetch("/fill-card", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"card_template": card_template}),
+        });
+
+        const result = await response.json();
+        const card = result.card;
+        const current_card_img = document.getElementById("current-card");
+
+        current_card_img.src = "/filled-card/" + card;
+    }
+</script>
+
+<form action="/fill-card" method="post" onsubmit="submitForm(event)" enctype='application/json' id="fill-card-form">
+    <button type="submit">Generate</button>
+</form>
+
+<div class="max-w-lg rounded overflow-hidden">
+    <img id="current-card" class="w-full" src="{{ card_template.web_safe_path }}" />
+</div>

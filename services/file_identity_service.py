@@ -2,7 +2,7 @@ from pathlib import Path
 import sqlite3
 import uuid
 
-from ..paths import file_identity_db_path
+from paths import file_identity_db_path
 
 
 class FileIdentityService:
